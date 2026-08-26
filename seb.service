@@ -1,0 +1,12 @@
+[Unit]
+Description=Seb Features
+After=network.target
+
+[Service]
+Type=simple
+User=root
+ExecStart=/usr/local/bin/seb.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

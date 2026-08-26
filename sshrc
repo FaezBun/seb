@@ -1,0 +1,9 @@
+#!/bin/bash
+IP=$(echo $SSH_CLIENT | awk '{print $1}')
+USER_LOGGED=$USER
+TIME=$(date "+%Y-%m-%d %H:%M:%S")
+
+/usr/local/bin/tg-alert.sh "🔐 SSH LOGIN SUCCESS!
+User: $USER_LOGGED
+IP: $IP
+Time: $TIME"
