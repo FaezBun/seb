@@ -1,10 +1,10 @@
 # Seb Centralized Services
-
+---
 1. CyberPower UPS Telegram Monitor
 	
-	![pic1.gif](ups)
+	!(pic1.gif)(ups)
 	 
-	A lightweight bash script and systemd service to monitor CyberPower UPS status via pwrstat on Linux (Debian) and send real-time alerts to a Telegram bot (Power failure, 50% battery warning, and 20% critical shutdown alert). I built this to solve a recurring issue at home: power trips during thunderstorms. Sudden, unexpected power loss can cause severe long-term damage to server hardware and data integrity. This project ensures I am instantly notified when the power goes out, allowing the server to be monitored and safely shut down before the UPS battery dies.
+A lightweight bash script and systemd service to monitor CyberPower UPS status via pwrstat on Linux (Debian) and send real-time alerts to a Telegram bot (Power failure, 50% battery warning, and 20% critical shutdown alert). I built this to solve a recurring issue at home: power trips during thunderstorms. Sudden, unexpected power loss can cause severe long-term damage to server hardware and data integrity. This project ensures I am instantly notified when the power goes out, allowing the server to be monitored and safely shut down before the UPS battery dies.
 
 	* **Automated Telegram Alerts:**
 	  * **Power Outage:** Immediate notification when the server switches to UPS battery power.
@@ -12,9 +12,11 @@
 	  * **Critical Battery (20%):** Emergency alert before the server shuts down.
 	  * **Power Restored:** Notification when utility power is back and charging.
 
+---
+
 2. Fail2Ban & SSH Telegram Sentinel
 
-	![pic2.jpg] (fail2ban)
+	!(pic2.jpg)(fail2ban)
 	A lightweight security monitoring setup for linux (Debian) that sends real-time Telegram alerts for successful SSH logins and automated Fail2Ban IP blocks.
 	
 	* Scans all active jails (e.g., `sshd`) to retrieve blocked IP addresses.
@@ -24,6 +26,10 @@
 
 1. **Telegram Bot Setup:** * Create a bot using [@BotFather](https://t.me/BotFather) and copy your **API Token**. * Get your Telegram User ID using [@userinfobot](https://t.me/userinfobot).
 2. **UPS Software:** Ensure pwrstat (CyberPower PowerPanel Personal) is installed and properly monitoring your UPS. [https://www.cyberpowersystems.com/product/software/power-panel-personal/powerpanel-personal-linux/](https://www.cyberpowersystems.com/product/software/power-panel-personal/powerpanel-personal-linux/)
+
+
+---
+
 
 ### Installation
 
@@ -55,7 +61,7 @@ Code ada dalam Github repo.
 sudo vim /etc/ssh/sshrc
 ```
 
-Code ada dalam Github repo. Replace Token & Chat ID.
+Code ada dalam Github repo. 
 
 5. Activekan service
 
@@ -90,6 +96,9 @@ lowbatt-threshold = 20
 ```bash
 sudo systemctl restart pwrstatd
 ```
+---
+
+
 ### Services
 
 1. Fail2ban
