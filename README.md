@@ -20,9 +20,12 @@ A lightweight bash script and systemd service to monitor CyberPower UPS status v
 
     A lightweight security monitoring setup for linux (Debian) that sends real-time Telegram alerts for successful SSH logins and automated Fail2Ban IP blocks.
 	
-	* Scans all active jails (e.g., `sshd`) to retrieve blocked IP addresses.
-	* Clean, vertical numbered list display of banned IPs in Telegram.
-	* Automatically reports a **"Clean"** status if no IPs are currently blocked.
+* Scans all active jails (e.g., `sshd`) to retrieve blocked IP addresses.
+* Clean, vertical numbered list display of banned IPs in Telegram.
+* Automatically reports a **"Clean"** status if no IPs are currently blocked.
+
+---
+
 ### Prerequisites
 
 1. **Telegram Bot Setup:** * Create a bot using [@BotFather](https://t.me/BotFather) and copy your **API Token**. * Get your Telegram User ID using [@userinfobot](https://t.me/userinfobot).
