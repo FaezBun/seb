@@ -1,6 +1,6 @@
 # Seb Centralized Services
 
-1. CyberPower UPS Telegram Monitor
+## 1. CyberPower UPS Telegram Monitor
 	
 	![ups](pic1.gif)
 	 
@@ -14,7 +14,7 @@ A lightweight bash script and systemd service to monitor CyberPower UPS status v
 
 ---
 
-2. Fail2Ban & SSH Telegram Sentinel
+## 2. Fail2Ban & SSH Telegram Sentinel
 
 	![Fail2ban](pic2.jpg)
 
