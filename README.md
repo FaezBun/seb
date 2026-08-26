@@ -2,7 +2,7 @@
 ---
 1. CyberPower UPS Telegram Monitor
 	
-	!(pic1.gif)(ups)
+	!(pic1.gif)
 	 
 A lightweight bash script and systemd service to monitor CyberPower UPS status via pwrstat on Linux (Debian) and send real-time alerts to a Telegram bot (Power failure, 50% battery warning, and 20% critical shutdown alert). I built this to solve a recurring issue at home: power trips during thunderstorms. Sudden, unexpected power loss can cause severe long-term damage to server hardware and data integrity. This project ensures I am instantly notified when the power goes out, allowing the server to be monitored and safely shut down before the UPS battery dies.
 
@@ -16,8 +16,9 @@ A lightweight bash script and systemd service to monitor CyberPower UPS status v
 
 2. Fail2Ban & SSH Telegram Sentinel
 
-	!(pic2.jpg)(fail2ban)
-	A lightweight security monitoring setup for linux (Debian) that sends real-time Telegram alerts for successful SSH logins and automated Fail2Ban IP blocks.
+	!(pic2.jpg)
+
+    A lightweight security monitoring setup for linux (Debian) that sends real-time Telegram alerts for successful SSH logins and automated Fail2Ban IP blocks.
 	
 	* Scans all active jails (e.g., `sshd`) to retrieve blocked IP addresses.
 	* Clean, vertical numbered list display of banned IPs in Telegram.
