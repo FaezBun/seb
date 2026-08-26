@@ -1,16 +1,16 @@
 # Seb Centralized Services
----
+
 1. CyberPower UPS Telegram Monitor
 	
 	![ups](pic1.gif)
 	 
 A lightweight bash script and systemd service to monitor CyberPower UPS status via pwrstat on Linux (Debian) and send real-time alerts to a Telegram bot (Power failure, 50% battery warning, and 20% critical shutdown alert). I built this to solve a recurring issue at home: power trips during thunderstorms. Sudden, unexpected power loss can cause severe long-term damage to server hardware and data integrity. This project ensures I am instantly notified when the power goes out, allowing the server to be monitored and safely shut down before the UPS battery dies.
 
-	* **Automated Telegram Alerts:**
-	  * **Power Outage:** Immediate notification when the server switches to UPS battery power.
-	  * **Battery at 50%:** Warning when battery capacity drops to half.
-	  * **Critical Battery (20%):** Emergency alert before the server shuts down.
-	  * **Power Restored:** Notification when utility power is back and charging.
+* **Automated Telegram Alerts:**
+  * **Power Outage:** Immediate notification when the server switches to UPS battery power.
+  * **Battery at 50%:** Warning when battery capacity drops to half.
+  * **Critical Battery (20%):** Emergency alert before the server shuts down.
+  * **Power Restored:** Notification when utility power is back and charging.
 
 ---
 
