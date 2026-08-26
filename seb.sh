@@ -31,7 +31,7 @@ send_telegram() {
 }
 
 # ==============================================================
-# FUNGSI KHAS: PAPAR SENARAI BAN FAIL2BAN (TANPA BUTANG UNBLOCK)
+# FUNGSI KHAS: PAPAR SENARAI BAN FAIL2BAN (DENGAN BUTANG KEKAL)
 # ==============================================================
 send_banlist_text() {
     local JAILS=$(sudo fail2ban-client status 2>/dev/null | grep "Jail list" | sed 's/.*:[\t ]*//' | tr ',' ' ')
@@ -44,9 +44,22 @@ send_banlist_text() {
         done
     done
 
+    # Butang bawah kekal untuk banlist juga
+    local KEYBOARD='{
+        "keyboard": [
+            [{"text": "1. UPS STATE"}, {"text": "2. BANLIST"}]
+        ],
+        "resize_keyboard": true,
+        "is_persistent": true
+    }'
+
     # Jika tiada IP yang kena ban
     if [ ${#ALL_IPS[@]} -eq 0 ]; then
-        send_telegram "🛡️ <b>FAIL2BAN STATUS:</b> Tiada IP yang sedang disekat (Clean)."
+        curl -s -X POST "https://api.telegram.org/bot${TOKEN}/sendMessage" \
+        -d chat_id="${CHAT_ID}" \
+        -d parse_mode="HTML" \
+        --data-urlencode text="🛡️ <b>FAIL2BAN STATUS:</b> Tiada IP yang sedang disekat (Clean)." \
+        -d "reply_markup=${KEYBOARD}" > /dev/null
         return
     fi
 
@@ -60,11 +73,12 @@ send_banlist_text() {
         COUNTER=$((COUNTER + 1))
     done
 
-    # Hantar senarai murni tanpa inline keyboard unblock
+    # Hantar senarai berserta keyboard supaya butang bawah sentiasa betul (2. BANLIST)
     curl -s -X POST "https://api.telegram.org/bot${TOKEN}/sendMessage" \
     -d chat_id="${CHAT_ID}" \
     -d parse_mode="HTML" \
-    --data-urlencode text="$MSG" > /dev/null
+    --data-urlencode text="$MSG" \
+    -d "reply_markup=${KEYBOARD}" > /dev/null
 }
 
 # ==============================================================
@@ -117,7 +131,7 @@ while true; do
             # Semak teks mesej masuk
             MSG_TEXT=$(echo "$UPDATES" | jq -r --arg chat_id "$CHAT_ID" '.result[]? | select(.message?.chat?.id?|tostring == $chat_id) | .message?.text? // empty' | tail -n 1)
             
-            if [[ "$MSG_TEXT" == "1. UPS STATE" ]]; then
+            if [[ "$MSG_TEXT" == "1. UPS STATE" ]] || [[ "$MSG_TEXT" == "/upstate" ]]; then
                 FULL_STATUS=$(sudo pwrstat -status)
                 send_telegram "📊 <b>STATUS SEMASA UPS:</b>
 <pre><code>$FULL_STATUS</code></pre>"
