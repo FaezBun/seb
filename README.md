@@ -18,8 +18,10 @@ A lightweight bash script and systemd service to monitor CyberPower UPS status v
 
 ![Fail2ban](pic2.jpg)
 
-    A lightweight security monitoring setup for linux (Debian) that sends real-time Telegram alerts for successful SSH logins and automated Fail2Ban IP blocks.
-	
+
+A lightweight security monitoring setup for linux (Debian) that sends real-time Telegram alerts for successful SSH logins and automated Fail2Ban IP blocks.
+
+
 * Scans all active jails (e.g., `sshd`) to retrieve blocked IP addresses.
 * Clean, vertical numbered list display of banned IPs in Telegram.
 * Automatically reports a **"Clean"** status if no IPs are currently blocked.
