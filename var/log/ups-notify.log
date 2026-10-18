@@ -1,0 +1,3 @@
+2026-10-18 09:32:29 SEND: ✅ <b>UJIAN SELESAI PEMBAIKAN</b>
+Parser UPS telah dibetulkan. Noti power failure
+2026-10-18 09:32:30 TG-SEND {"ok":true,"result":{"message_id":161,"from":{"id":"<BOT_ID>","is_bot":true,"first_name":"<BOT_FIRSTNAME>","username":"<BOT_USERNAME>"},"chat":{"id":"<TELEGRAM_CHAT_ID>","first_name":"<TG_FIRSTNAME>","username":"<TG_USERNAME>","type":"

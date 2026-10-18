@@ -1,0 +1,14 @@
+[Unit]
+Description=Seb Features (UPS + Telegram notifier)
+Wants=network-online.target
+After=network-online.target network.target pwrstatd.service fail2ban.service
+
+[Service]
+Type=simple
+User=root
+ExecStart=/usr/local/bin/seb.sh
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

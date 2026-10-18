@@ -1,0 +1,16 @@
+#!/bin/bash
+IP=$(echo $SSH_CLIENT | awk '{print $1}')
+USER_LOGGED=$USER
+TIME=$(date "+%Y-%m-%d %H:%M:%S")
+
+# Hantar terus menggunakan curl ke Telegram bot awak
+TOKEN="<TELEGRAM_BOT_TOKEN>"
+CHAT_ID="<TELEGRAM_CHAT_ID>"
+
+curl -s --max-time 10 --retry 2 -X POST "https://api.telegram.org/bot${TOKEN}/sendMessage" \
+-d chat_id="${CHAT_ID}" \
+-d parse_mode="HTML" \
+--data-urlencode "text=🔐 <b>SSH LOGIN SUCCESS!</b>
+User: $USER_LOGGED
+IP: $IP
+Time: $TIME" > /dev/null

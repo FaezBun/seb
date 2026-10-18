@@ -1,12 +1,23 @@
 #!/bin/bash
 
-TOKEN="BOT_API"
-CHAT_ID="TELE_ID"
+TOKEN="<TELEGRAM_BOT_TOKEN>"
+CHAT_ID="<TELEGRAM_CHAT_ID>"
 
 NOTIFIED_ONBATT=0
 NOTIFIED_50=0
 NOTIFIED_20=0
 UPDATE_ID=0
+
+# LOG (Tiada token/key ditulis dalam fail ini - hanya status hantar)
+TG_LOG="/var/log/ups-notify.log"
+log_t() { echo "$(date '+%Y-%m-%d %H:%M:%S') $*" >> "$TG_LOG"; }
+
+# Hantar ke Telegram - respons disimpan utk debug (bukan senyap terus)
+tg_curl() {
+    local OUT
+    OUT=$(curl -sS --retry 3 --retry-connrefused --max-time 15 "$@" 2>&1)
+    log_t "TG-SEND ${OUT:0:200}"
+}
 
 # ==============================================================
 # FUNGSI UTAMA HANTAR MESEJ & MENU KEKAL DI BAWAH CHAT
@@ -23,11 +34,12 @@ send_telegram() {
         "is_persistent": true
     }'
 
-    curl -s -X POST "https://api.telegram.org/bot${TOKEN}/sendMessage" \
+    log_t "SEND: ${TEXT:0:80}"
+    tg_curl -X POST "https://api.telegram.org/bot${TOKEN}/sendMessage" \
     -d chat_id="${CHAT_ID}" \
     -d parse_mode="HTML" \
     --data-urlencode text="${TEXT}" \
-    -d "reply_markup=${KEYBOARD}" > /dev/null
+    -d "reply_markup=${KEYBOARD}"
 }
 
 # ==============================================================
@@ -87,24 +99,28 @@ send_banlist_text() {
 while true; do
     
     # 1. BAHAGIAN PEMANTAUAN UPS (BATERI & LETRIK)
-    STATE=$(sudo pwrstat -status 2>/dev/null | grep -i "State" | awk -F'\.\.\.+' '{print $2}' | xargs)
-    SUPPLY=$(sudo pwrstat -status 2>/dev/null | grep -i "Power Supply by" | awk -F'\.\.\.+' '{print $2}' | xargs)
-    BATT=$(sudo pwrstat -status 2>/dev/null | grep -i "Battery Capacity" | awk -F'\.\.\.+' '{print $2}' | awk '{print $1}')
+    # AMBIL STATUS UPS (PANGGIL SEKALI SAJA) - parser tahan-rosak
+    UPSS=$(sudo pwrstat -status 2>/dev/null)
+    STATE=$(echo "$UPSS" | grep -E '^[[:space:]]*State\.' | grep -oP '\.{3,}[[:space:]]*\K.*' | xargs)
+    SUPPLY=$(echo "$UPSS" | grep -i 'Power Supply by' | grep -oP '\.{3,}[[:space:]]*\K.*' | xargs)
+    BATT=$(echo "$UPSS" | grep -i 'Battery Capacity' | grep -oP '\.{3,}[[:space:]]*\K.*' | awk '{print $1}')
+    [[ -z "$STATE" ]] && log_t "PARSE-FAIL: state kosong"
 
     if [[ -n "$STATE" ]]; then
         if [[ "$STATE" != "Normal" ]] || [[ "$SUPPLY" == *"Battery"* ]]; then
             
             if [[ $NOTIFIED_ONBATT -eq 0 ]]; then
+                log_t "EVENT: POWER-FAIL state=$STATE supply=$SUPPLY batt=$BATT%"
                 send_telegram "⚠️ ELEKTRIK TERPUTUS! Server beroperasi guna bateri UPS. Status: $STATE | Bateri: $BATT%"
                 NOTIFIED_ONBATT=1
             fi
             
-            if [[ $BATT -le 50 && $NOTIFIED_50 -eq 0 ]]; then
+            if [[ -n "$BATT" ]] && [[ $BATT -le 50 && $NOTIFIED_50 -eq 0 ]]; then
                 send_telegram "⚠️ PERHATIAN! Bateri UPS tinggal $BATT%. Status: $STATE"
                 NOTIFIED_50=1
             fi
             
-            if [[ $BATT -le 20 && $NOTIFIED_20 -eq 0 ]]; then
+            if [[ -n "$BATT" ]] && [[ $BATT -le 20 && $NOTIFIED_20 -eq 0 ]]; then
                 send_telegram "🚨 KRITIKAL! Bateri UPS pada tahap $BATT%. Server akan dimatikan tak lama lagi."
                 NOTIFIED_20=1
             fi
