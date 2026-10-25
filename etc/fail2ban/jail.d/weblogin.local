@@ -1,0 +1,13 @@
+[weblogin]
+enabled  = true
+filter   = weblogin
+logpath  = /var/log/weblogin.log
+maxretry = 10
+findtime = 600
+bantime  = 3600
+bantime.increment = true
+bantime.factor    = 2
+bantime.maxtime   = 604800
+# Trafik masuk melalui tunnel Cloudflare (peer 127.0.0.1), jadi iptables
+# TIDAK dapat menyekat IP luar. Blocklist app (403) itulah penyekat sebenar.
+action   = weblogin-app

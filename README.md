@@ -26,6 +26,98 @@ A lightweight security monitoring setup for linux (Debian) that sends real-time 
 * Clean, vertical numbered list display of banned IPs in Telegram.
 * Automatically reports a **"Clean"** status if no IPs are currently blocked.
 
+### External IP Ban
+
+Kalau service duduk belakang Cloudflare Tunnel, IP client sebenar datang dalam header `CF-Connecting-IP`. Tapi cloudflared connect ke server dari `127.0.0.1`, so iptables tak nampak IP luar dan tak boleh block. Penyelesaian: app simpan blocklist sendiri (balas `403`), dan fail2ban baca log app untuk tambah/buang IP dalam blocklist tu.
+
+Pastikan app tulis log macam ni bila login fail atau kena rate limit:
+
+```text
+2026-01-01 12:00:00 LOGIN-FAIL ip=203.0.113.10 user=admin
+2026-01-01 12:00:01 RATE-LIMIT ip=203.0.113.10
+```
+
+1. Buat filter
+
+```bash
+sudo vim /etc/fail2ban/filter.d/weblogin.conf
+```
+
+```ini
+[Definition]
+datepattern = %%Y-%%m-%%d %%H:%%M:%%S
+failregex = (LOGIN-FAIL|RATE-LIMIT) ip=<HOST>
+ignoreregex =
+```
+
+2. Buat jail
+
+```bash
+sudo vim /etc/fail2ban/jail.d/weblogin.local
+```
+
+```ini
+[weblogin]
+enabled  = true
+filter   = weblogin
+logpath  = /var/log/weblogin.log
+maxretry = 10
+findtime = 600
+bantime  = 3600
+bantime.increment = true
+bantime.factor    = 2
+bantime.maxtime   = 604800
+action   = weblogin-app
+```
+
+3. Buat action
+
+```bash
+sudo vim /etc/fail2ban/action.d/weblogin-app.conf
+```
+
+```ini
+[Definition]
+actionstart =
+actionstop =
+actioncheck =
+actionban = /usr/local/sbin/weblogin-block.sh add <ip> ; /usr/local/sbin/weblogin-notify.sh "fail2ban BAN ip <ip>"
+actionunban = /usr/local/sbin/weblogin-block.sh del <ip> ; /usr/local/sbin/weblogin-notify.sh "fail2ban UNBAN ip <ip>"
+```
+
+4. Test dan restart
+
+```bash
+sudo fail2ban-client -t
+sudo systemctl restart fail2ban
+```
+
+5. Check IP yang kena ban
+
+```bash
+sudo fail2ban-client status weblogin
+```
+
+6. Unblock IP (optional)
+
+```bash
+sudo fail2ban-client set weblogin unbanip <IP_ADDRESS>
+```
+
+7. Block IP manually (optional)
+
+```bash
+sudo fail2ban-client set weblogin banip <IP_ADDRESS>
+```
+
+8. Check blocklist yang app guna
+
+```bash
+sudo cat /etc/weblogin/blocklist.txt
+```
+
+Note: IP dalam blocklist tetap dapat `403` walaupun iptables tak block, sebab trafik tunnel datang dari `127.0.0.1`.
+
 ---
 
 ### Prerequisites
