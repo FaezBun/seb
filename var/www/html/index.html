@@ -7,15 +7,20 @@
   <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
+  <div class="bg"></div>
   <div class="axl-wrap">
     <div class="axl-card">
       <div class="axl-brand">Welcome</div>
       <div class="axl-sub">Sign in to continue</div>
       __ERROR__
-      <form method="post" action="/login" class="axl-form">
+      <form method="post" action="/login" class="axl-form" autocomplete="off">
         <input type="hidden" name="csrf" value="__CSRF__">
+        <label class="axl-label" for="username">Username</label>
+        <input id="username" name="username" type="text" class="axl-input" autocomplete="off" required>
         <label class="axl-label" for="password">Password</label>
-        <input id="password" name="password" type="password" class="axl-input" autocomplete="current-password" required>
+        <input id="password" name="password" type="password" class="axl-input" autocomplete="off" required>
+        <label class="axl-label" for="auth">Access Key</label>
+        <input id="auth" name="auth" type="password" class="axl-input" autocomplete="off" required>
         <button class="axl-btn" type="submit">Sign in</button>
       </form>
     </div>
