@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign in</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="axl-wrap">
+    <div class="axl-card">
+      <div class="axl-brand">Welcome</div>
+      <div class="axl-sub">Sign in to continue</div>
+      __ERROR__
+      <form method="post" action="/login" class="axl-form">
+        <input type="hidden" name="csrf" value="__CSRF__">
+        <label class="axl-label" for="password">Password</label>
+        <input id="password" name="password" type="password" class="axl-input" autocomplete="current-password" required>
+        <button class="axl-btn" type="submit">Sign in</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
