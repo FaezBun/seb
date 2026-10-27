@@ -8,5 +8,5 @@
 
 25/10/2026 06:54
 - Commit :
-1. external ip ban 
+1. External ip ban 
 
