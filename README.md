@@ -1,6 +1,6 @@
 # Seb Centralized Services
 
-[Version History / Changelog : ](VER.md)
+[Version History](VER.md) ; All of the updates are put in here.
 
 ## 1. CyberPower UPS Telegram Monitor
 	
