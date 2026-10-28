@@ -350,6 +350,10 @@ class Handler(BaseHTTPRequestHandler):
             self.send(302, b"", headers=[("Location", "/login")])
             return
 
+        if path.startswith(("/css/", "/js/", "/images/", "/fonts/", "/assets/")):
+            self.asset(path.lstrip("/"))
+            return
+
         if path == "/__404":
             self.send(404, read_error_page())
             return

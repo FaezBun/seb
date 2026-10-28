@@ -16,3 +16,12 @@ body{min-height:100vh;display:flex;align-items:center;justify-content:center;col
 .axl-btn{margin-top:6px;border:0;border-radius:999px;background:linear-gradient(90deg,rgba(56,189,248,.95) 0%,rgba(59,130,246,.95) 100%);color:#f8fafc;font-weight:500;padding:11px 16px;font-size:14px;cursor:pointer;transition:filter .2s,transform .2s}
 .axl-btn:hover{filter:brightness(1.05);transform:translateY(-1px)}
 .axl-btn:active{transform:translateY(0)}
+.loading-screen{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:url(/images/bg.jpg) center/cover no-repeat;z-index:9999;transition:opacity .6s ease,visibility .6s ease}
+.loading-screen::after{content:"";position:absolute;inset:0;background:radial-gradient(1200px 800px at 50% 0%,rgba(15,23,42,.4) 0%,rgba(2,6,23,.75) 55%,rgba(2,6,23,.92) 100%)}
+.loading-content{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center}
+.loading-logo{font-size:22px;letter-spacing:.4em;text-transform:uppercase;font-weight:600}
+.loading-text{font-size:13px;letter-spacing:.6em;text-transform:uppercase;color:rgba(226,232,240,.7)}
+.loading-bar{position:relative;width:min(280px,70vw);height:2px;background:rgba(148,163,184,.4);overflow:hidden;border-radius:999px}
+.loading-bar::after{content:"";position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent,rgba(56,189,248,.9),transparent);animation:loading 1.6s infinite}
+.loading-screen.hidden{opacity:0;visibility:hidden;pointer-events:none}
+@keyframes loading{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
